@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Watch Brand AJAX Modal</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+  <h1>Watch Brands AJAX Modal</h1>
+  <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Open Brand List
+  </button>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5">Watch Brands</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <table class="table" id="ajaxContent"></table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const myModalEl = document.getElementById('exampleModal');
+myModalEl.addEventListener('show.bs.modal', event => {
+  const table = document.getElementById('ajaxContent');
+  table.innerHTML = '<tr><td><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></td></tr>';
+
+  fetch('ajax.php')
+    .then(response => response.json())
+    .then(response => {
+      table.innerHTML = '';
+      response.forEach(brand => {
+        const row = table.insertRow();
+        const cell1 = row.insertCell(0);
+        const cell2 = row.insertCell(1);
+        cell1.innerHTML = brand.brand_name;
+        cell2.innerHTML = brand.country;
+      });
+    });
+});
+</script>
+</body>
+</html>
