@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Watch Brand AJAX Dropdown</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+  <h1>Watch Brands AJAX Dropdown</h1>
+  <div class="dropdown" id="myDropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+      Show Brands
+    </button>
+    <ul class="dropdown-menu" id="myList"></ul>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+const myDropdown = document.getElementById('myDropdown');
+myDropdown.addEventListener('show.bs.dropdown', event => {
+  const myList = document.getElementById('myList');
+  myList.innerHTML = '<div class="spinner-border m-2" role="status"><span class="visually-hidden">Loading...</span></div>';
+
+  fetch('ajax.php')
+    .then(response => response.json())
+    .then(response => {
+      myList.innerHTML = '';
+      response.forEach(brand => {
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.innerHTML = brand.brand_name;
+        a.href = '#';
+        a.classList.add('dropdown-item');
+        li.appendChild(a);
+        myList.appendChild(li);
+      });
+    });
+});
+</script>
+</body>
+</html>
